@@ -22,23 +22,30 @@ Modifica la gramática corrigiendo los errores que veas, de manera que genere fr
               "if" <parenthesis> <block> ("else" "if" <block>)* ('else' <block>)? |
               "while" <parenthesis> <block> |
               'function' <word> '(' <word> (',' <word>)* ')' <block> |
-              <expr> ";"
+              <assign> ";"
               
 <declaration> ::= 'var' WORD ('=' <expr>)?
 
-<expr> ::= <term> (('==', '!=', '>', '>=', '<', '<=', '=') <term>)*
+<leftvalue> ::= WORD ('.'WORD | '[' <expr> ']')*        // casiano <expr> ::= (<leftvalue> '=')*
+
+<assign> ::= <leftvalue> ('=' <expr>)*                  //<assign> ::= <expr> ('=' <expr>)*
+
+<expr> ::= <term> (('==', '!=', '>', '>=', '<', '<=') <term>)*
 
 <term> ::= <sum> (('+', '-') <sum>)*
 
 <sum> ::= <fact> (('*', '/') <fact>)*
 
-<fact> ::= <value> | <word> <apply> | <parenthesis> | <array> // Added by: Casiano
+///// LO PODEMOSBORRAR <fact> ::= <value> | <parenthesis> // Quitamos word y array
 
 <apply> ::= '(' <expr> (',' <expr>)* ')'<apply> | '.'<word><apply> | empty
 
 <array> ::= '[' ']' | '[' <expr> (',' <expr> )*] // Added by Casiano
 
 <parenthesis> ::= '(' <expr> ')'
+
+<fact> (//ANTES ERA VALUE//) ::=  (WORD | VALUE | <array>  ) ('.'WORD | '[' <expr> ']' | <apply> )* //// NUMBER | STRING | WORD ('.'WORD | ('[' <expr> ']')*)    //Para poder poner b[4].c ... 
+
 ```
 
 ## Tokens
